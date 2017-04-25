@@ -185,6 +185,9 @@ void SymbolMap::CalculateThresholdFromTotalCount(int64 total_count) {
   count_threshold_ = total_count * FLAGS_sample_threshold_frac;
   if (count_threshold_ < kMinSamples) {
     count_threshold_ = kMinSamples;
+    LOG(INFO) << "Count threshold set to minimum (" << count_threshold_ << ")";
+  } else {
+    LOG(INFO) << "Count threshold set to " << count_threshold_ << " from total count";
   }
 }
 
@@ -203,6 +206,7 @@ void SymbolMap::CalculateThreshold() {
   if (count_threshold_ < kMinSamples) {
     count_threshold_ = kMinSamples;
   }
+  LOG(INFO) << "Count threshold set to " << count_threshold_;
 }
 
 const bool SymbolMap::GetSymbolInfoByAddr(
@@ -265,7 +269,9 @@ class SymbolReader : public ElfReader::SymbolSink {
 
 
 void SymbolMap::BuildSymbolMap() {
+  LOG(INFO) << "Building symbol map from " << binary_ << "\n";
   ElfReader elf_reader(binary_);
+
   base_addr_ = elf_reader.VaddrOfFirstLoadSegment();
   SymbolReader symbol_reader(&name_alias_map_, &address_symbol_map_);
 
@@ -590,6 +596,7 @@ void SymbolMap::ComputeWorkingSets() {
   uint64 total_count = 0;
 
   // Step 1. Compute histogram.
+  LOG(INFO) << "Compute histogram map_=" << map_.size();
   for (const auto &name_symbol : map_) {
     total_count += AddSymbolProfileToHistogram(name_symbol.second, &histogram);
   }
@@ -599,6 +606,10 @@ void SymbolMap::ComputeWorkingSets() {
   uint64 one_bucket_count = total_count / (NUM_GCOV_WORKING_SETS + 1);
 
   // Step 2. Traverse the histogram to update the working set.
+  LOG(INFO) << "Traverse histogram total_count=" << total_count;
+  if (total_count == 0) {
+    LOG(FATAL) << "Histogram map has 0 entries";
+  }
   for (Histogram::const_reverse_iterator iter = histogram.rbegin();
        iter != histogram.rend() && bucket_num < NUM_GCOV_WORKING_SETS; ++iter) {
     uint64 count = iter->first;

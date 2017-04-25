@@ -42,15 +42,17 @@ set<uint64> SampleReader::GetSampledAddresses() const {
       addrs.insert(addr_count.first);
     }
   }
+  LOG(INFO) << "GetSampledAddresses() -> " << addrs.size();
   return addrs;
 }
 
 uint64 SampleReader::GetSampleCountOrZero(uint64 addr) const {
   AddressCountMap::const_iterator iter = address_count_map_.find(addr);
-  if (iter == address_count_map_.end())
-    return 0;
-  else
-    return iter->second;
+  uint64 count = 0;
+  if (iter != address_count_map_.end())
+    count = iter->second;
+  LOG(INFO) << "GetSampleCountOrZero(" << std::hex << addr << ") -> " << count;
+  return count;
 }
 
 uint64 SampleReader::GetTotalSampleCount() const {
@@ -65,6 +67,7 @@ uint64 SampleReader::GetTotalSampleCount() const {
       ret += addr_count.second;
     }
   }
+  LOG(INFO) << "GetTotalSampleCount() -> " << ret;
   return ret;
 }
 
@@ -82,6 +85,7 @@ bool SampleReader::ReadAndSetTotalCount() {
       total_count_ += addr_count.second;
     }
   }
+  LOG(INFO) << "ReadAndSetTotalCount() -> " << total_count_;
   return true;
 }
 

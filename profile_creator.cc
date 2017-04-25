@@ -75,6 +75,10 @@ bool ProfileCreator::ReadSample(const string &input_profile_name,
     LOG(ERROR) << "Error reading profile.";
     return false;
   }
+  LOG(INFO) << "Read " << sample_reader_->GetTotalCount() << " samples [a="
+	    << sample_reader_->address_count_map().size() << ",r="
+	    << sample_reader_->range_count_map().size() << ",b="
+	    << sample_reader_->branch_count_map().size() << "]";
   return true;
 }
 
@@ -90,6 +94,8 @@ bool ProfileCreator::ComputeProfile(SymbolMap *symbol_map,
     LOG(ERROR) << "Error reading binary " << binary_;
     return false;
   }
+
+  LOG(INFO) << sampled_addrs.size() << " addresss(es) in " << sampled_functions.size() << " function(s)";
 
   Profile profile(sample_reader_, binary_, *addr2line, symbol_map);
   profile.ComputeProfile();

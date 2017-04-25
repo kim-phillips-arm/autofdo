@@ -93,6 +93,14 @@ uint64 Profile::ProfileMaps::GetAggregatedCount() const {
 
 void Profile::ProcessPerFunctionProfile(string func_name,
                                         const ProfileMaps &maps) {
+  LOG(INFO) << "ProcessPerFunctionProfile(" << func_name << ")";
+
+  if (!symbol_map_->ShouldEmit(maps.GetAggregatedCount())) {
+    return;
+  }
+
+  symbol_map_->AddSymbol(func_name);
+
   InstructionMap inst_map(addr2line_, symbol_map_);
   inst_map.BuildPerFunctionInstructionMap(func_name, maps.start_addr,
                                           maps.end_addr);
