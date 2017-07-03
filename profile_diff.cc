@@ -27,6 +27,10 @@
 
 DEFINE_bool(compare_function, false,
             "whether to compare function level profile");
+DEFINE_bool(compare_lines, false,
+            "show lines in profile diff");
+DEFINE_bool(show_local, false,
+            "in conjunction with -compare_lines, show percentages within that function rather than globally");
 
 int main(int argc, char **argv) {
   google::ParseCommandLineFlags(&argc, &argv, true);
@@ -46,9 +50,14 @@ int main(int argc, char **argv) {
   reader_2.ReadFromFile(argv[2]);
 
   if (FLAGS_compare_function) {
-    symbol_map_1.DumpFuncLevelProfileCompare(symbol_map_2);
+    symbol_map_1.DumpFuncLevelProfileCompare(symbol_map_2, FLAGS_compare_lines, FLAGS_show_local);
   }
 
-  printf("%.4f\n", symbol_map_1.Overlap(symbol_map_2));
+  if (FLAGS_compare_lines) {
+    printf("%.4f\n", symbol_map_1.OverlapLines(symbol_map_2));
+  } else {
+    printf("%.4f\n", symbol_map_1.Overlap(symbol_map_2));
+  }
+
   return 0;
 }

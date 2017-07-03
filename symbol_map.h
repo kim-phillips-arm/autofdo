@@ -138,7 +138,14 @@ class Symbol {
   bool IsFromHeader() const;
 
   // Dumps content of the symbol with a give indentation.
-  void Dump(int indent) const;
+  void Dump(int indent, uint64 denom=0) const;
+
+  // Dumps content of a pair of symbols, side-by-side.
+  static void DumpLineProfileCompare(int indent, Symbol const *s1, Symbol const *s2,
+				     uint64 d1, uint64 d2, bool show_local);
+
+  // Calculate overlap of a pair of symbols
+  static double Overlap(Symbol const *s1, Symbol const *s2, uint64 total_1, uint64 total_2);
 
   // Returns the max of pos_counts and callsites' pos_counts.
   uint64 MaxPosCallsiteCount() const;
@@ -304,6 +311,10 @@ class SymbolMap {
   // overlap = sum(min(count_i_1/total_1, count_i_2/total_2))
   float Overlap(const SymbolMap &map) const;
 
+  // Returns the overlap between two symbol maps, at the line-by-line level.
+  // See 'Overlap' for more details.
+  float OverlapLines(const SymbolMap &map) const;
+
   // Iterates the address count map to calculate the working set of the profile.
   // Working set is a map from bucket_num to total number of instructions that
   // consumes bucket_num/NUM_GCOV_WORKING_SETS of dynamic instructions. This
@@ -340,8 +351,8 @@ class SymbolMap {
   std::map<uint64, uint64> GetLegacySymbolStartAddressSizeMap() const;
 
   void Dump() const;
-  void DumpFuncLevelProfileCompare(const SymbolMap &map) const;
-
+  void DumpFuncLevelProfileCompare(const SymbolMap &map, bool compare_lines, bool show_local) const;
+  
   void AddAlias(const string& sym, const string& alias);
 
   // Validates if the current symbol map is sane.

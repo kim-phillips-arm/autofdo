@@ -30,6 +30,10 @@ DEFINE_int32(dump_cutoff_percent, 2,
 DEFINE_double(sample_threshold_frac, 0.000005,
               "Sample threshold ratio. The threshold of total function count"
               " is determined by max_sample_count * sample_threshold_frac.");
+DEFINE_bool(dump_max, true,
+           "show function percentages as percentage of max vs. totals in profile diff");
+DEFINE_bool(dump_percent, false,
+           "show percentages in dump as percentage of total");
 
 namespace {
 // Returns whether str ends with suffix.
@@ -401,13 +405,20 @@ struct CallsiteLessThan {
   }
 };
 
-void Symbol::Dump(int ident) const {
+void Symbol::Dump(int ident, uint64 denom) const {
+  printf("%s", info.func_name);
   if (ident == 0) {
-    printf("%s total:%llu head:%llu\n", info.func_name,
-           total_count, head_count);
-  } else {
-    printf("%s total:%llu\n", info.func_name, total_count);
+    printf(" %s/%s:%u head:%llu",
+	   info.dir_name ? info.dir_name : "<no-dir>",
+	   info.file_name ? info.file_name : "<no-file>",
+	   info.start_line, head_count);
   }
+  printf(" total:%llu", total_count);
+  if (FLAGS_dump_percent && denom > 0 && total_count > 0) {
+    printf(" (%.2f%%)", (100.0 * static_cast<double>(total_count)) / denom);
+  }
+  printf("\n");
+
   std::vector<uint32> positions;
   for (const auto &pos_count : pos_counts)
     positions.push_back(pos_count.first);
@@ -417,11 +428,17 @@ void Symbol::Dump(int ident) const {
     DCHECK(ret != pos_counts.end());
     PrintSourceLocation(info.start_line, pos, ident + 2);
     printf("%llu", ret->second.count);
+    if (FLAGS_dump_percent && total_count > 0 && ret->second.count > 0) {
+      printf(" (%.2f%%)", (100.0 * static_cast<double>(ret->second.count)) / total_count);
+    }
     TargetCountPairs target_count_pairs;
     GetSortedTargetCountPairs(ret->second.target_map,
                               &target_count_pairs);
     for (const auto &target_count : target_count_pairs) {
       printf("  %s:%llu", target_count.first.c_str(), target_count.second);
+      if (FLAGS_dump_percent && total_count > 0 && target_count.second > 0) {
+	printf(" (%.2f%%)", (100.0 * static_cast<double>(target_count.second)) / total_count);
+      }
     }
     printf("\n");
   }
@@ -432,7 +449,7 @@ void Symbol::Dump(int ident) const {
   std::sort(calls.begin(), calls.end(), CallsiteLessThan());
   for (const auto &callsite : calls) {
     PrintSourceLocation(info.start_line, callsite.first, ident + 2);
-    callsites.find(callsite)->second->Dump(ident + 2);
+    callsites.find(callsite)->second->Dump(ident + 2, total_count);
   }
 }
 
@@ -464,6 +481,195 @@ void SymbolMap::Dump() const {
       symbol->Dump(0);
     }
   }
+}
+
+void Symbol::DumpLineProfileCompare(int ident, Symbol const *s1, Symbol const *s2,
+				    uint64 d1, uint64 d2, bool show_local) {
+  if ((!s1 || s1->total_count == 0) && (!s2 || s2->total_count == 0)) {
+    return;
+  }
+
+  if (show_local && !ident) {
+    if (s1) d1 = s1->total_count;
+    if (s2) d2 = s2->total_count;
+  }
+
+  // Sort positions
+  vector<uint32> positions;
+  if (s1) {
+    for (const auto &pos_count : s1->pos_counts)
+      positions.push_back(pos_count.first);
+  }
+  if (s2) {
+    for (const auto &pos_count : s2->pos_counts) {
+      if (s1 && s1->pos_counts.find(pos_count.first) != s1->pos_counts.end()) continue;
+      positions.push_back(pos_count.first);
+    }
+  }
+  std::sort(positions.begin(), positions.end());
+
+  // Dump positions
+  for (const auto &pos : positions) {
+    Symbol const *s;
+    double v1=0, v2=0;
+    if (s1 && d1) {
+      PositionCountMap::const_iterator r1 = s1->pos_counts.find(pos);
+      if (r1 != s1->pos_counts.end()) {
+	s = s1;
+	v1 = 100.0 * static_cast<double>(r1->second.count) / d1;
+      }
+    }
+    if (s2 && d2) {
+      PositionCountMap::const_iterator r2 = s2->pos_counts.find(pos);
+      if (r2 != s2->pos_counts.end()) {
+	s = s2;
+	v2 = 100.0 * static_cast<double>(r2->second.count) / d2;
+      }
+    }
+    if (s && (v1 || v2)) {
+      printf("%7.3f%% %7.3f%% ", v1, v2);
+      PrintSourceLocation(s->info.start_line, pos, ident + 2);
+      printf("\n");
+    }
+  }
+
+  // Sort callsites
+  vector<Callsite> calls;
+  if (s1) {
+    for (const auto &pos_symbol : s1->callsites) {
+      calls.push_back(pos_symbol.first);
+    }
+  }
+  if (s2) {
+    for (const auto &pos_symbol : s2->callsites) {
+      if (s1 && s1->callsites.find(pos_symbol.first) != s1->callsites.end()) continue;
+      calls.push_back(pos_symbol.first);
+    }
+  }
+  std::sort(calls.begin(), calls.end(), CallsiteLessThan());
+
+  // Dump callsites
+  for (const auto &callsite : calls) {
+    Symbol const *s, *cs1 = 0, *cs2 = 0;
+    double v1=0, v2=0;
+    if (s1) {
+      CallsiteMap::const_iterator site = s1->callsites.find(callsite);
+      if (site != s1->callsites.end()) {
+	cs1 = site->second;
+	s = s1;
+	v1 = 100.0 * static_cast<double>(cs1->total_count)/d1;
+      }
+    }
+    if (s2) {
+      CallsiteMap::const_iterator site = s2->callsites.find(callsite);
+      if (site != s2->callsites.end()) {
+	cs2 = site->second;
+	s = s2;
+	v2 = 100.0 * static_cast<double>(cs2->total_count)/d2;
+      }
+    }
+    if (s && (v1 || v2)) {
+      printf("%7.3f%% %7.3f%% ", v1, v2);
+      PrintSourceLocation(s->info.start_line, callsite.first, ident + 2);
+      Symbol const *cs = cs1 ? cs1 : cs2;
+      printf("%s\n", cs->info.func_name);
+      Symbol::DumpLineProfileCompare(ident + 2, cs1, cs2, d1, d2, show_local);
+    }
+  }
+}
+
+double Symbol::Overlap(Symbol const *s1, Symbol const *s2, uint64 total_1, uint64 total_2) {
+  double overlap = 0.0;
+  
+  if (!s1 && !s2) {
+    return 0.0;
+  }
+  
+  // Overlap for positions
+  if (s1 && !s2) {
+    for (const auto &pos_count : s1->pos_counts) {
+      overlap += static_cast<double>(pos_count.second.count) / total_1;
+    }
+  }
+  if (s1 && s2) {
+    for (const auto &pos_count : s1->pos_counts) {
+      const auto &other = s2->pos_counts.find(pos_count.first);
+      if (other != s2->pos_counts.end()) {
+	overlap += std::min(
+	  static_cast<double>(pos_count.second.count) / total_1,
+	  static_cast<double>(other->second.count) / total_2);
+      } else {
+	overlap += static_cast<double>(pos_count.second.count) / total_1;
+      }
+    }
+    for (const auto &pos_count : s2->pos_counts) {
+      if (s1->pos_counts.find(pos_count.first) != s1->pos_counts.end()) continue;
+      overlap += static_cast<double>(pos_count.second.count) / total_2;
+    }
+  }
+  if (!s1 && s2) {
+    for (const auto &pos_count : s2->pos_counts) {
+      overlap += static_cast<double>(pos_count.second.count) / total_2;
+    }
+  }
+    
+  // Overlap for callsites
+  if (s1 && !s2) {
+    for (const auto &pos_symbol : s1->callsites) {
+      overlap += Symbol::Overlap(pos_symbol.second, 0, total_1, total_2);
+    }
+  }
+  if (s1 && s2) {
+    for (const auto &pos_symbol : s1->callsites) {
+      const auto &site = s2->callsites.find(pos_symbol.first);
+      Symbol *other = (site == s2->callsites.end() ? 0 : site->second);
+      overlap += Symbol::Overlap(pos_symbol.second, other, total_1, total_2);
+    }
+    for (const auto &pos_symbol : s2->callsites) {
+      if (s1->callsites.find(pos_symbol.first) != s1->callsites.end()) continue;
+      overlap += Symbol::Overlap(0, pos_symbol.second, total_1, total_2);
+    }
+  }
+
+  if (!s1 && s2) {
+    for (const auto &pos_symbol : s2->callsites) {
+      overlap += Symbol::Overlap(0, pos_symbol.second, total_1, total_2);
+    }
+  }
+
+  return overlap;
+}
+
+float SymbolMap::OverlapLines(const SymbolMap &map) const {
+  std::map<string, pair<uint64, uint64> > overlap_map;
+
+  uint64 total_1 = 0;
+  uint64 total_2 = 0;
+  
+  for (const auto &name_symbol : map_) {
+    total_1 += name_symbol.second->total_count;
+  }
+  for (const auto &name_symbol : map.map()) {
+    total_2 += name_symbol.second->total_count;
+  }
+  
+  if (total_1 == 0 || total_2 == 0) {
+    return 0.0;
+  }
+
+  float overlap = 0.0;
+  for (const auto &name_symbol : map_) {
+    Symbol *symbol = name_symbol.second;
+    const auto &iter = map.map().find(name_symbol.first);
+    Symbol *other = (iter == map.map().end() ? 0 : iter->second);
+    overlap += Symbol::Overlap(symbol, other, total_1, total_2);
+  }
+  for (const auto &name_symbol : map.map()) {
+    if (map_.find(name_symbol.first) != map_.end()) continue;
+    Symbol *other = name_symbol.second;
+    overlap += Symbol::Overlap(0, other, total_1, total_2);
+  }
+  return overlap;
 }
 
 float SymbolMap::Overlap(const SymbolMap &map) const {
@@ -499,17 +705,27 @@ float SymbolMap::Overlap(const SymbolMap &map) const {
   return overlap;
 }
 
-void SymbolMap::DumpFuncLevelProfileCompare(const SymbolMap &map) const {
-  uint64 max_1 = 0;
-  uint64 max_2 = 0;
+void SymbolMap::DumpFuncLevelProfileCompare(const SymbolMap &map, bool compare_lines, bool show_local) const {
+  uint64 denom_1 = 0;
+  uint64 denom_2 = 0;
 
   // Calculate the max of the two maps
   for (const auto &name_symbol : map_) {
-    max_1 = std::max(name_symbol.second->total_count, max_1);
+    if (FLAGS_dump_max) {
+      denom_1 = std::max(name_symbol.second->total_count, denom_1);
+    } else {
+      denom_1 += name_symbol.second->total_count;
+    }
   }
   for (const auto &name_symbol : map.map()) {
-    max_2 = std::max(name_symbol.second->total_count, max_2);
+    if (FLAGS_dump_max) {
+      denom_2 = std::max(name_symbol.second->total_count, denom_2);
+    } else {
+      denom_2 += name_symbol.second->total_count;
+    }
   }
+
+  printf("%7lld  %7lld  %s\n", denom_1, denom_2, FLAGS_dump_max ? "max" : "total");
 
   // Sort map_1
   std::map<uint64, std::vector<string> > count_names_map;
@@ -524,19 +740,30 @@ void SymbolMap::DumpFuncLevelProfileCompare(const SymbolMap &map) const {
        count_names_iter != count_names_map.rend(); ++count_names_iter) {
     for (const auto &name : count_names_iter->second) {
       Symbol *symbol = map_.find(name)->second;
-      if (symbol->total_count * 100 < max_1 * FLAGS_dump_cutoff_percent) {
+      if (symbol->total_count * 100 < denom_1 * FLAGS_dump_cutoff_percent) {
         break;
       }
 
       const auto &iter = map.map().find(name);
       uint64 compare_count = 0;
+      Symbol *other = 0;
       if (iter != map.map().end()) {
-        compare_count = iter->second->total_count;
+	other = iter->second;
+        compare_count = other->total_count;
       }
-      printf("%3.4f%% %3.4f%% %s\n",
-             100 * static_cast<double>(symbol->total_count) / max_1,
-             100 * static_cast<double>(compare_count) / max_2,
+      
+      if (compare_lines) {
+	printf("-----------------\n");
+      }
+      
+      printf("%7.3f%% %7.3f%% %s\n",
+             100 * static_cast<double>(symbol->total_count) / denom_1,
+             100 * static_cast<double>(compare_count) / denom_2,
              name.c_str());
+
+      if (compare_lines) {
+	Symbol::DumpLineProfileCompare(0, symbol, other, denom_1, denom_2, show_local);
+      }
     }
   }
 
@@ -553,23 +780,37 @@ void SymbolMap::DumpFuncLevelProfileCompare(const SymbolMap &map) const {
        count_names_iter != count_names_map.rend(); ++count_names_iter) {
     for (const auto &name : count_names_iter->second) {
       Symbol *symbol = map.map().find(name)->second;
-      if (symbol->total_count * 100 < max_2 * FLAGS_dump_cutoff_percent) {
+      if (symbol->total_count * 100 < denom_2 * FLAGS_dump_cutoff_percent) {
         break;
       }
 
       const auto &iter = map_.find(name);
       uint64 compare_count = 0;
+      Symbol *other = 0;
       if (iter != map.map().end()) {
         compare_count = iter->second->total_count;
-        if (compare_count * 100 >= max_1 * FLAGS_dump_cutoff_percent) {
+        if (compare_count * 100 >= denom_1 * FLAGS_dump_cutoff_percent) {
           continue;
         }
       }
-      printf("%3.4f%% %3.4f%% %s\n",
-             100 * static_cast<double>(compare_count) / max_1,
-             100 * static_cast<double>(symbol->total_count) / max_2,
+      
+      if (compare_lines) {
+	printf("-----------------\n");
+      }
+      
+      printf("%7.3f%% %7.3f%% %s\n",
+             100 * static_cast<double>(compare_count) / denom_1,
+             100 * static_cast<double>(symbol->total_count) / denom_2,
              name.c_str());
+
+      if (compare_lines) {
+	Symbol::DumpLineProfileCompare(0, other, symbol, denom_1, denom_2, show_local);
+      }
     }
+  }
+
+  if (compare_lines) {
+    printf("-----------------\n");
   }
 }
 
