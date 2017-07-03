@@ -30,6 +30,8 @@ DEFINE_int32(dump_cutoff_percent, 2,
 DEFINE_double(sample_threshold_frac, 0.000005,
               "Sample threshold ratio. The threshold of total function count"
               " is determined by max_sample_count * sample_threshold_frac.");
+DEFINE_int64(sample_threshold_min, 10,
+             "Sample threshold minimum");
 DEFINE_bool(dump_max, true,
            "show function percentages as percentage of max vs. totals in profile diff");
 DEFINE_bool(dump_percent, false,
@@ -183,15 +185,13 @@ void SymbolMap::AddSymbol(const string &name) {
   }
 }
 
-const int64 kMinSamples = 10;
-
 void SymbolMap::CalculateThresholdFromTotalCount(int64 total_count) {
   count_threshold_ = total_count * FLAGS_sample_threshold_frac;
-  if (count_threshold_ < kMinSamples) {
-    count_threshold_ = kMinSamples;
-    LOG(INFO) << "Count threshold set to minimum (" << count_threshold_ << ")";
+  if (count_threshold_ < FLAGS_sample_threshold_min) {
+    count_threshold_ = FLAGS_sample_threshold_min;
+    LOG(INFO) << "Count threshold set to minimum (" << count_threshold_ << ") as total_count (" << total_count << ") < " << static_cast<int64>(FLAGS_sample_threshold_min / FLAGS_sample_threshold_frac) << " (too small)";
   } else {
-    LOG(INFO) << "Count threshold set to " << count_threshold_ << " from total count";
+    LOG(INFO) << "Count threshold set to " << count_threshold_ << " from total count " << total_count;
   }
 }
 
@@ -206,11 +206,7 @@ void SymbolMap::CalculateThreshold() {
       total_count += name_symbol.second->total_count;
     }
   }
-  count_threshold_ = total_count * FLAGS_sample_threshold_frac;
-  if (count_threshold_ < kMinSamples) {
-    count_threshold_ = kMinSamples;
-  }
-  LOG(INFO) << "Count threshold set to " << count_threshold_;
+  CalculateThresholdFromTotalCount(total_count);
 }
 
 const bool SymbolMap::GetSymbolInfoByAddr(
