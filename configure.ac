@@ -16,7 +16,7 @@ AC_PROG_CC
 AC_PROG_RANLIB
 
 AX_CXX_COMPILE_STDCXX_11
-AX_LLVM([ProfileData])
+AX_LLVM([ProfileData])  # how to spec llvm 5.0?
 
 ac_cv_have_libgflags=1
 AC_DEFINE(HAVE_LIB_GFLAGS, 1, [define if you have google gflags library])
