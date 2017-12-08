@@ -4847,6 +4847,7 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 /* end confdefs.h.  */
 
               #include "llvm/ProfileData/SampleProf.h"
+              #include "llvm/IR/DebugInfoMetadata.h"
 int
 main ()
 {
@@ -4854,6 +4855,10 @@ main ()
                   llvm::sampleprof::SampleRecord *R;
                   R = new llvm::sampleprof::SampleRecord();
                   return llvm::sampleprof::SPVersion();
+
+                  llvm::DILocation::getBaseDiscriminatorFromDiscriminator(0);
+                  llvm::DILocation::getDuplicationFactorFromDiscriminator(0);
+
 
 
   ;
@@ -4912,7 +4917,7 @@ $as_echo "$as_me: WARNING: could not detect the LLVM libraries. Support for LLVM
 $as_echo "#define HAVE_LLVM /**/" >>confdefs.h
 
   fi
-
+  # how to spec llvm 5.0?
 
 ac_cv_have_libgflags=1
 
