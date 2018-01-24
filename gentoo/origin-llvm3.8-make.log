@@ -1,0 +1,259 @@
+CDPATH="${ZSH_VERSION+.}:" && cd . && /bin/sh /home/gentoo/autofdo/missing aclocal-1.15 -I m4
+ cd . && /bin/sh /home/gentoo/autofdo/missing automake-1.15 --gnu
+CDPATH="${ZSH_VERSION+.}:" && cd . && /bin/sh /home/gentoo/autofdo/missing autoconf
+/bin/sh ./config.status --recheck
+running CONFIG_SHELL=/bin/sh /bin/sh ./configure --no-create --no-recursion
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for g++... g++
+checking whether the C++ compiler works... yes
+checking for C++ compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for style of include used by make... GNU
+checking dependency style of g++... gcc3
+checking for gcc... gcc
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... gcc3
+checking for ranlib... ranlib
+checking whether g++ supports C++11 features by default... no
+checking whether g++ supports C++11 features with -std=gnu++11... yes
+checking whether we can compile and link with llvm(ProfileData)... yes
+configure: Using shared LLVM libraries.  Setting -rpath to /usr/lib64.
+checking for MD5 in -lcrypto... yes
+checking for gzopen in -lz... yes
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking for stdint.h... (cached) yes
+checking for sys/types.h... (cached) yes
+checking for inttypes.h... (cached) yes
+checking for unistd.h... (cached) yes
+checking syscall.h usability... yes
+checking syscall.h presence... yes
+checking for syscall.h... yes
+checking sys/syscall.h usability... yes
+checking sys/syscall.h presence... yes
+checking for sys/syscall.h... yes
+checking execinfo.h usability... yes
+checking execinfo.h presence... yes
+checking for execinfo.h... yes
+checking libunwind.h usability... yes
+checking libunwind.h presence... yes
+checking for libunwind.h... yes
+checking ucontext.h usability... yes
+checking ucontext.h presence... yes
+checking for ucontext.h... yes
+checking sys/utsname.h usability... yes
+checking sys/utsname.h presence... yes
+checking for sys/utsname.h... yes
+checking pwd.h usability... yes
+checking pwd.h presence... yes
+checking for pwd.h... yes
+checking syslog.h usability... yes
+checking syslog.h presence... yes
+checking for syslog.h... yes
+checking sys/time.h usability... yes
+checking sys/time.h presence... yes
+checking for sys/time.h... yes
+checking glob.h usability... yes
+checking glob.h presence... yes
+checking for glob.h... yes
+checking unwind.h usability... yes
+checking unwind.h presence... yes
+checking for unwind.h... yes
+checking size of void *... 8
+checking for uint16_t... yes
+checking for u_int16_t... yes
+checking for __uint16... no
+checking whether the compiler implements namespaces... yes
+checking what namespace STL code is in... std
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+ /bin/sh ./config.status
+config.status: creating Makefile
+config.status: creating glog/src/glog/logging.h
+config.status: creating glog/src/glog/raw_logging.h
+config.status: creating glog/src/glog/vlog_is_on.h
+config.status: creating glog/src/glog/stl_logging.h
+config.status: creating config.h
+config.status: config.h is unchanged
+config.status: creating glog/src/config.h
+config.status: glog/src/config.h is unchanged
+config.status: executing depfiles commands
+(CDPATH="${ZSH_VERSION+.}:" && cd . && /bin/sh /home/gentoo/autofdo/missing autoheader)
+rm -f stamp-h1
+touch config.h.in
+cd . && /bin/sh ./config.status config.h
+config.status: creating config.h
+config.status: config.h is unchanged
+make  all-am
+make[1]: Entering directory '/home/gentoo/autofdo'
+depbase=`echo chromiumos-wide-profiling/address_mapper.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/address_mapper.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/address_mapper.o chromiumos-wide-profiling/address_mapper.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/perf_reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/perf_reader.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/perf_reader.o chromiumos-wide-profiling/perf_reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/perf_parser.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/perf_parser.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/perf_parser.o chromiumos-wide-profiling/perf_parser.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/utils.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/utils.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/utils.o chromiumos-wide-profiling/utils.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/buffer_reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/buffer_reader.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/buffer_reader.o chromiumos-wide-profiling/buffer_reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/data_reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/data_reader.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/data_reader.o chromiumos-wide-profiling/data_reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/buffer_writer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/buffer_writer.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/buffer_writer.o chromiumos-wide-profiling/buffer_writer.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo chromiumos-wide-profiling/data_writer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT chromiumos-wide-profiling/data_writer.o -MD -MP -MF $depbase.Tpo -c -o chromiumos-wide-profiling/data_writer.o chromiumos-wide-profiling/data_writer.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libquipper.a
+ar cru libquipper.a chromiumos-wide-profiling/address_mapper.o chromiumos-wide-profiling/perf_reader.o chromiumos-wide-profiling/perf_parser.o chromiumos-wide-profiling/utils.o chromiumos-wide-profiling/buffer_reader.o chromiumos-wide-profiling/data_reader.o chromiumos-wide-profiling/buffer_writer.o chromiumos-wide-profiling/data_writer.o 
+ranlib libquipper.a
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-logging.o -MD -MP -MF glog/src/.deps/libglog_a-logging.Tpo -c -o glog/src/libglog_a-logging.o `test -f 'glog/src/logging.cc' || echo './'`glog/src/logging.cc
+mv -f glog/src/.deps/libglog_a-logging.Tpo glog/src/.deps/libglog_a-logging.Po
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-raw_logging.o -MD -MP -MF glog/src/.deps/libglog_a-raw_logging.Tpo -c -o glog/src/libglog_a-raw_logging.o `test -f 'glog/src/raw_logging.cc' || echo './'`glog/src/raw_logging.cc
+mv -f glog/src/.deps/libglog_a-raw_logging.Tpo glog/src/.deps/libglog_a-raw_logging.Po
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-vlog_is_on.o -MD -MP -MF glog/src/.deps/libglog_a-vlog_is_on.Tpo -c -o glog/src/libglog_a-vlog_is_on.o `test -f 'glog/src/vlog_is_on.cc' || echo './'`glog/src/vlog_is_on.cc
+mv -f glog/src/.deps/libglog_a-vlog_is_on.Tpo glog/src/.deps/libglog_a-vlog_is_on.Po
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-utilities.o -MD -MP -MF glog/src/.deps/libglog_a-utilities.Tpo -c -o glog/src/libglog_a-utilities.o `test -f 'glog/src/utilities.cc' || echo './'`glog/src/utilities.cc
+mv -f glog/src/.deps/libglog_a-utilities.Tpo glog/src/.deps/libglog_a-utilities.Po
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-demangle.o -MD -MP -MF glog/src/.deps/libglog_a-demangle.Tpo -c -o glog/src/libglog_a-demangle.o `test -f 'glog/src/demangle.cc' || echo './'`glog/src/demangle.cc
+mv -f glog/src/.deps/libglog_a-demangle.Tpo glog/src/.deps/libglog_a-demangle.Po
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-symbolize.o -MD -MP -MF glog/src/.deps/libglog_a-symbolize.Tpo -c -o glog/src/libglog_a-symbolize.o `test -f 'glog/src/symbolize.cc' || echo './'`glog/src/symbolize.cc
+mv -f glog/src/.deps/libglog_a-symbolize.Tpo glog/src/.deps/libglog_a-symbolize.Po
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -DNO_THREADS -g -O2 -std=gnu++11 -MT glog/src/libglog_a-signalhandler.o -MD -MP -MF glog/src/.deps/libglog_a-signalhandler.Tpo -c -o glog/src/libglog_a-signalhandler.o `test -f 'glog/src/signalhandler.cc' || echo './'`glog/src/signalhandler.cc
+mv -f glog/src/.deps/libglog_a-signalhandler.Tpo glog/src/.deps/libglog_a-signalhandler.Po
+rm -f libglog.a
+ar cru libglog.a glog/src/libglog_a-logging.o glog/src/libglog_a-raw_logging.o glog/src/libglog_a-vlog_is_on.o glog/src/libglog_a-utilities.o glog/src/libglog_a-demangle.o glog/src/libglog_a-symbolize.o glog/src/libglog_a-signalhandler.o 
+ranlib libglog.a
+depbase=`echo gflags/gflags.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT gflags/gflags.o -MD -MP -MF $depbase.Tpo -c -o gflags/gflags.o gflags/gflags.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo gflags/gflags_completions.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT gflags/gflags_completions.o -MD -MP -MF $depbase.Tpo -c -o gflags/gflags_completions.o gflags/gflags_completions.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo gflags/gflags_reporting.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT gflags/gflags_reporting.o -MD -MP -MF $depbase.Tpo -c -o gflags/gflags_reporting.o gflags/gflags_reporting.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libgflags.a
+ar cru libgflags.a gflags/gflags.o gflags/gflags_completions.o gflags/gflags_reporting.o 
+ranlib libgflags.a
+depbase=`echo symbolize/addr2line_inlinestack.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbolize/addr2line_inlinestack.o -MD -MP -MF $depbase.Tpo -c -o symbolize/addr2line_inlinestack.o symbolize/addr2line_inlinestack.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo symbolize/bytereader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbolize/bytereader.o -MD -MP -MF $depbase.Tpo -c -o symbolize/bytereader.o symbolize/bytereader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo symbolize/dwarf2reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbolize/dwarf2reader.o -MD -MP -MF $depbase.Tpo -c -o symbolize/dwarf2reader.o symbolize/dwarf2reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo symbolize/dwarf3ranges.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbolize/dwarf3ranges.o -MD -MP -MF $depbase.Tpo -c -o symbolize/dwarf3ranges.o symbolize/dwarf3ranges.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo symbolize/elf_reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbolize/elf_reader.o -MD -MP -MF $depbase.Tpo -c -o symbolize/elf_reader.o symbolize/elf_reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo symbolize/functioninfo.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbolize/functioninfo.o -MD -MP -MF $depbase.Tpo -c -o symbolize/functioninfo.o symbolize/functioninfo.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+rm -f libsymbolize.a
+ar cru libsymbolize.a symbolize/addr2line_inlinestack.o symbolize/bytereader.o symbolize/dwarf2reader.o symbolize/dwarf3ranges.o symbolize/elf_reader.o symbolize/functioninfo.o 
+ranlib libsymbolize.a
+depbase=`echo addr2line.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT addr2line.o -MD -MP -MF $depbase.Tpo -c -o addr2line.o addr2line.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo gcov.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT gcov.o -MD -MP -MF $depbase.Tpo -c -o gcov.o gcov.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo instruction_map.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT instruction_map.o -MD -MP -MF $depbase.Tpo -c -o instruction_map.o instruction_map.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo module_grouper.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT module_grouper.o -MD -MP -MF $depbase.Tpo -c -o module_grouper.o module_grouper.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo profile_creator.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile_creator.o -MD -MP -MF $depbase.Tpo -c -o profile_creator.o profile_creator.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo profile_writer.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile_writer.o -MD -MP -MF $depbase.Tpo -c -o profile_writer.o profile_writer.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo sample_reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT sample_reader.o -MD -MP -MF $depbase.Tpo -c -o sample_reader.o sample_reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo source_info.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT source_info.o -MD -MP -MF $depbase.Tpo -c -o source_info.o source_info.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo symbol_map.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT symbol_map.o -MD -MP -MF $depbase.Tpo -c -o symbol_map.o symbol_map.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo profile.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile.o -MD -MP -MF $depbase.Tpo -c -o profile.o profile.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo create_gcov.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT create_gcov.o -MD -MP -MF $depbase.Tpo -c -o create_gcov.o create_gcov.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+g++ -std=gnu++11 -g -O2 -std=gnu++11   -o create_gcov addr2line.o gcov.o instruction_map.o module_grouper.o profile_creator.o profile_writer.o sample_reader.o source_info.o symbol_map.o profile.o create_gcov.o libquipper.a libglog.a libsymbolize.a libgflags.a -lz -lcrypto 
+depbase=`echo profile_reader.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile_reader.o -MD -MP -MF $depbase.Tpo -c -o profile_reader.o profile_reader.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+depbase=`echo dump_gcov.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT dump_gcov.o -MD -MP -MF $depbase.Tpo -c -o dump_gcov.o dump_gcov.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+g++ -std=gnu++11 -g -O2 -std=gnu++11   -o dump_gcov profile_reader.o symbol_map.o module_grouper.o gcov.o dump_gcov.o libglog.a libgflags.a libsymbolize.a -lz -lcrypto 
+depbase=`echo sample_merger.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT sample_merger.o -MD -MP -MF $depbase.Tpo -c -o sample_merger.o sample_merger.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+g++ -std=gnu++11 -g -O2 -std=gnu++11   -o sample_merger addr2line.o gcov.o instruction_map.o module_grouper.o profile_creator.o profile_writer.o sample_reader.o source_info.o symbol_map.o profile.o sample_merger.o libquipper.a libglog.a libsymbolize.a libgflags.a -lz -lcrypto 
+depbase=`echo profile_merger.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile_merger.o -MD -MP -MF $depbase.Tpo -c -o profile_merger.o profile_merger.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+g++ -std=gnu++11 -g -O2 -std=gnu++11   -o profile_merger addr2line.o gcov.o instruction_map.o module_grouper.o profile_creator.o profile_writer.o sample_reader.o source_info.o symbol_map.o profile.o profile_reader.o profile_merger.o libquipper.a libglog.a libsymbolize.a libgflags.a -lz -lcrypto 
+depbase=`echo profile_diff.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile_diff.o -MD -MP -MF $depbase.Tpo -c -o profile_diff.o profile_diff.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+g++ -std=gnu++11 -g -O2 -std=gnu++11   -o profile_diff addr2line.o gcov.o instruction_map.o module_grouper.o profile_creator.o profile_writer.o sample_reader.o source_info.o symbol_map.o profile.o profile_reader.o profile_diff.o libquipper.a libglog.a libsymbolize.a libgflags.a -lz -lcrypto 
+depbase=`echo profile_update.o | sed 's|[^/]*$|.deps/&|;s|\.o$||'`;\
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -std=gnu++11 -g -O2 -std=gnu++11 -MT profile_update.o -MD -MP -MF $depbase.Tpo -c -o profile_update.o profile_update.cc &&\
+mv -f $depbase.Tpo $depbase.Po
+g++ -std=gnu++11 -g -O2 -std=gnu++11   -o profile_update addr2line.o gcov.o instruction_map.o module_grouper.o profile_creator.o profile_writer.o sample_reader.o source_info.o symbol_map.o profile.o profile_reader.o profile_update.o libquipper.a libglog.a libsymbolize.a libgflags.a -lz -lcrypto 
+g++ -DHAVE_CONFIG_H -I. -I./glog/src  -I. -I./glog/src  -I/usr/include   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -DCREATE_LLVM_PROF -g -O2 -std=gnu++11 -MT create_llvm_prof-addr2line.o -MD -MP -MF .deps/create_llvm_prof-addr2line.Tpo -c -o create_llvm_prof-addr2line.o `test -f 'addr2line.cc' || echo './'`addr2line.cc
+In file included from addr2line.h:24:0,
+                 from addr2line.cc:17:
+source_info.h: In member function 'uint32 autofdo::SourceInfo::Offset(bool) const':
+source_info.h:63:19: error: 'getBaseDiscriminatorFromDiscriminator' is not a member of 'llvm::DILocation'
+                 ? llvm::DILocation::getBaseDiscriminatorFromDiscriminator(
+                   ^
+source_info.h: In member function 'uint32 autofdo::SourceInfo::DuplicationFactor() const':
+source_info.h:73:12: error: 'getDuplicationFactorFromDiscriminator' is not a member of 'llvm::DILocation'
+     return llvm::DILocation::getDuplicationFactorFromDiscriminator(
+            ^
+make[1]: *** [Makefile:925: create_llvm_prof-addr2line.o] Error 1
+make[1]: Leaving directory '/home/gentoo/autofdo'
+make: *** [Makefile:504: all] Error 2
