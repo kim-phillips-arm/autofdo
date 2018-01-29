@@ -34,7 +34,7 @@ AC_DEFUN([AX_LLVM],
     AS_HELP_STRING(
       [--with-llvm@<:@=PATH-TO-LLVM-CONFIG@:>@],
       [ use LLVM libraries (default is yes). It is possible to specify the
-        full path to the llvm-config binary. If not given, llvm-config will be
+        absolute path to the llvm-config binary. If not given, llvm-config will be
         searched in your path.
       ]),
     [
@@ -128,7 +128,7 @@ AC_DEFUN([AX_LLVM],
 
   if test "$succeeded" != "yes" ; then
     AC_MSG_WARN(
-      [[could not detect the LLVM (version 5 or higher) libraries. Support for LLVM profiles disabled.]]
+      [[could not detect LLVM version 5 (or higher) libraries. Support for LLVM profiles disabled.]]
     )
   else
     AC_SUBST(LLVM_CXXFLAGS)
