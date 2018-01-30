@@ -116,8 +116,10 @@ AC_DEFUN([AX_LLVM],
       CXXFLAGS="$CXXFLAGS_SAVED"
       LDFLAGS="$LDFLAGS_SAVED"
       if test "x$shared_mode" = "xstatic"; then
+        AC_MSG_NOTICE([succeeded: $succeeded])
         AC_MSG_NOTICE([Using static LLVM libraries.])
       elif test "x$shared_mode" = "xshared"; then
+        AC_MSG_NOTICE([succeeded: $succeeded])
         AC_MSG_NOTICE([Using shared LLVM libraries.  Setting -rpath to $rpath.])
       else
         AC_MSG_ERROR([Could not determine whether to use shared or static LLVM libraries])
@@ -129,10 +131,12 @@ AC_DEFUN([AX_LLVM],
   fi
 
   if test "$succeeded" != "yes" ; then
+    AC_MSG_NOTICE([succeeded: $succeeded])
     AC_MSG_WARN(
       [[could not detect LLVM version 5 (or higher) libraries. Support for LLVM profiles disabled.]]
     )
   else
+    AC_MSG_NOTICE([succeeded: yes])
     AC_SUBST(LLVM_CXXFLAGS)
     AC_SUBST(LLVM_LDFLAGS)
     AC_DEFINE(HAVE_LLVM,,[define if the LLVM library is available])
