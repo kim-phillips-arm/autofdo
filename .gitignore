@@ -7,12 +7,19 @@
 .libs
 
 /Makefile
+/Makefile.in
 aclocal.m4
 autom4te.cache
 config.cache
 config.h
+config.h.in
 config.log
 config.status
+configure
+compile
+depcomp
+install-sh
+missing
 stamp-h1
 
 /create_gcov
