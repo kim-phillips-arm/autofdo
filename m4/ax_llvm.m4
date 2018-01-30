@@ -112,17 +112,17 @@ AC_DEFUN([AX_LLVM],
       if test "x$ax_cv_llvm" = "xyes"; then
         succeeded=yes
         AC_MSG_NOTICE([succeeded=yes])
-      fi
-      CXXFLAGS="$CXXFLAGS_SAVED"
-      LDFLAGS="$LDFLAGS_SAVED"
-      if test "x$shared_mode" = "xstatic"; then
-        AC_MSG_NOTICE([succeeded: $succeeded])
-        AC_MSG_NOTICE([Using static LLVM libraries.])
-      elif test "x$shared_mode" = "xshared"; then
-        AC_MSG_NOTICE([succeeded: $succeeded])
-        AC_MSG_NOTICE([Using shared LLVM libraries.  Setting -rpath to $rpath.])
-      else
-        AC_MSG_ERROR([Could not determine whether to use shared or static LLVM libraries])
+        CXXFLAGS="$CXXFLAGS_SAVED"
+        LDFLAGS="$LDFLAGS_SAVED"
+        if test "x$shared_mode" = "xstatic"; then
+          AC_MSG_NOTICE([succeeded: $succeeded])
+          AC_MSG_NOTICE([Using static LLVM libraries.])
+        elif test "x$shared_mode" = "xshared"; then
+          AC_MSG_NOTICE([succeeded: $succeeded])
+          AC_MSG_NOTICE([Using shared LLVM libraries.  Setting -rpath to $rpath.])
+        else
+          AC_MSG_ERROR([Could not determine whether to use shared or static LLVM libraries])
+        fi
       fi
     else
       succeeded=no
