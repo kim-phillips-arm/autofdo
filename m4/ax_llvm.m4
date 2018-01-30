@@ -111,6 +111,7 @@ AC_DEFUN([AX_LLVM],
 
       if test "x$ax_cv_llvm" = "xyes"; then
         succeeded=yes
+        AC_MSG_NOTICE([succeeded=yes])
       fi
       CXXFLAGS="$CXXFLAGS_SAVED"
       LDFLAGS="$LDFLAGS_SAVED"
@@ -123,6 +124,7 @@ AC_DEFUN([AX_LLVM],
       fi
     else
       succeeded=no
+      AC_MSG_NOTICE([succeeded=no])
     fi
   fi
 
